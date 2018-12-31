@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="h.l.mapper.PeopleMapper">
+	<!-- 一对一映射 -->
+	<resultMap type="peopleandorder" id="paoResMap">
+		<!-- <id column="IDD" property="id" /> -->
+		<result column="ORDERNAME" property="orderName" />
+		<result column="ORDERCODE" property="orderCode" />
+		<result column="TABLETESTID" property="peopleId" />
+		<association property="people" javaType="people">
+			<id column="TABLETESTID" property="id" />
+			<result column="USERNAME" property="username" />
+			<result column="PASSWORD" property="password" />
+		</association>
+	</resultMap>
+
+	<select id="findpeopleAndOrderById" parameterType="int"
+		resultMap="paoResMap">
+		SELECT TABLETEST1.*,TABLETEST2.ID IDD,
+		ORDERNAME,ORDERCODE,TABLETESTID FROM
+		TABLETEST1,TABLETEST2
+		WHERE
+		TABLETEST2.TABLETESTID=TABLETEST1.ID AND
+		TABLETEST1.ID=#{id}
+	</select>
+	<select id="findPeopleById" parameterType="int"
+		resultType="people">
+		select *from tabletest1 where id=#{value}
+	</select>
+	<select id="findPeopleVoById" parameterType="peoplevo"
+		resultType="peoplevo">
+		<!-- 一对一映射 -->
+		SELECT TABLETEST1.*,ORDERNAME,ORDERCODE FROM
+		TABLETEST1,TABLETEST2
+		WHERE TABLETEST2.TABLETESTID=TABLETEST1.ID AND
+		TABLETEST1.ID=#{id}
+		ORDER BY TABLETEST1.ID DESC
+	</select>
+	<!-- 根据订单order的id查询order，单表查询 -->
+	<select id="findOrderById" parameterType="int"
+		resultType="order">
+		select *from tabletest2 where id=#{value}
+	</select>
+	<resultMap type="oneandmore" id="oamResMap">
+		<id column="ID" property="id" />
+		<result column="USERNAME" property="username" />
+		<result column="PASSWORD" property="password" />
+		<collection property="orderList" ofType="order">
+			<id column="IDD" property="id"/>
+			<result column="ORDERNAME" property="orderName" />
+			<result column="ORDERCODE" property="orderCode" />
+			<result column="TABLETESTID" property="peopleId" />
+		</collection>
+	</resultMap>
+	<select id="findoneAndMoreById" parameterType="int"
+		resultMap="oamResMap">
+		SELECT TABLETEST1.*,TABLETEST2.ID IDD,
+		ORDERNAME,ORDERCODE,TABLETESTID FROM
+		TABLETEST1,TABLETEST2
+		WHERE
+		TABLETEST2.TABLETESTID=TABLETEST1.ID AND
+		TABLETEST1.ID=#{value}
+	</select>
+</mapper>

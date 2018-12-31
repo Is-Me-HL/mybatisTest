@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="test">
+	<select id="findUserById" parameterType="int"
+		resultType="h.l.pojo.User">
+		select * from new1 where id=#{id}
+	</select>
+	<insert id="insertUser" parameterType="h.l.pojo.User">
+		insert into new1(id,content) values(#{id},#{content})
+	</insert>
+	<delete id="deleteUser" parameterType="int">
+		delete from new1 where
+		id=#{id}
+	</delete>
+	<update id="updateUser" parameterType="h.l.pojo.User">
+		update new1 set content=#{content} where id=#{id}
+	</update>
+</mapper>

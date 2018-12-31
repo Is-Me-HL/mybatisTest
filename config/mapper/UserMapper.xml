@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="h.l.mapper.UserMapper">
+	<sql id="query_if">
+		<if test="id!=null and id!=''">
+			id=#{id}
+		</if>
+	</sql>
+	<update id="updateUser" parameterType="user">
+		update new1 set
+		content=#{content}
+		<where>
+			<include refid="query_if"></include>
+		</where>
+	</update>
+	<resultMap type="user" id="userResultMap">
+		<id column="id_" property="id" />
+		<result column="content_" property="content" />
+	</resultMap>
+	<select id="findUserById" parameterType="int"
+		resultMap="userResultMap">
+		select id id_ ,content content_ from new1 where id=#{id}
+	</select>
+	<insert id="insertUser" parameterType="user">
+		insert into
+		new1(id,content) values(#{id},#{content})
+	</insert>
+	<delete id="deleteUser" parameterType="int">
+		delete from new1 where
+		id=#{id}
+	</delete>
+	<select id="findUserByName" parameterType="String"
+		resultType="user">
+		select *from new1 where content=#{name}
+	</select>
+</mapper>
